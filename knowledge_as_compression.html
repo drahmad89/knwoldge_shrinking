@@ -419,6 +419,22 @@ We model the history of knowledge representation as a sequence of KRS systems \(
   $$\exists\, \mathcal{A} \subseteq \mathcal{R}_i : \;\; \forall x \in \mathcal{X}_{\text{total}}(t), \;\; C_i(x) \in \mathcal{A} \;\;\text{and}\;\; D_\theta(C_i(x)) \approx x$$
   In traditional storage paradigms (\(\mathcal{K}_2\) through \(\mathcal{K}_5\)), \(|\mathcal{A}| \geq |\mathcal{X}_{\text{total}}|\) — the archive must be at least as large as the content it stores. In the LLM paradigm \(\mathcal{K}_6\), the model parameters \(\theta\) serve as the archive, and \(|\theta| \ll |\mathcal{X}_{\text{total}}|\) is achievable because \(\theta\) stores generative structure, not enumerated content.
 </div>
+
+<div class="block theorem">
+  <span class="block-label">Theorem 2.4 — The Coupled Growth Impossibility (Red Queen Theorem)</span>
+  In the storage paradigms \(\mathcal{K}_2\) through \(\mathcal{K}_5\), the universal archive problem is not merely difficult but <em>structurally impossible</em>. Let \(S(t)\) denote the maximum storage capacity achievable at time \(t\), and \(|\mathcal{X}_{\text{total}}(t)|\) the total data produced by humanity at time \(t\). We observe that these quantities are <em>coupled</em>: advances in storage technology simultaneously enable greater data production. Formally, data growth rate is a function of storage capacity:
+  $$\frac{d}{dt}|\mathcal{X}_{\text{total}}| = f\big(S(t),\; |\mathcal{X}_{\text{total}}(t)|\big) \quad \text{where} \quad \frac{\partial f}{\partial S} > 0$$
+  Cheaper and denser storage makes it economically feasible for more agents to record, sense, and generate data. Empirically, \(|\mathcal{X}_{\text{total}}(t)|\) grows at \(\sim 25\%\) per year (the global datasphere reached \(\sim 290\) ZB in 2025), consistently outpacing centralized storage capacity growth. The consequence is:
+  $$\lim_{t \to \infty} \frac{S_{\text{max single site}}(t)}{|\mathcal{X}_{\text{total}}(t)|} = 0$$
+  No single archive, however large, can asymptotically contain the datasphere, because the same technology that expands the archive expands the datasphere faster. This is analogous to the historical pattern: each generation of pyramids grew larger, yet the knowledge they aimed to preserve grew faster still.
+</div>
+
+<div class="block corollary">
+  <span class="block-label">Corollary 2.5 — The Necessity of Generative Compression</span>
+  The Coupled Growth Impossibility implies that the universal archive problem can only be solved by a KRS in which \(|\mathcal{A}|\) grows <em>sub-linearly</em> with \(|\mathcal{X}_{\text{total}}|\). This requires a generative KRS (Definition 4.1) where the archive stores the structure underlying the data rather than the data itself. If the generative structure of \(\mathcal{X}_{\text{total}}\) is bounded while the specific instances are not, then:
+  $$|\theta| \sim \mathcal{O}\big(\log |\mathcal{X}_{\text{total}}|\big) \quad \text{or} \quad |\theta| \sim \mathcal{O}\big(|\mathcal{X}_{\text{total}}|^\alpha\big), \;\; \alpha < 1$$
+  The LLM paradigm is not merely a more convenient storage medium — it is the only class of KRS that can, in principle, keep pace with exponential data growth.
+</div>
 </section>
 
 <!-- ════════════════════════════════════════ -->
@@ -717,7 +733,7 @@ The preceding sections frame the LLM as a decompression engine: given a prompt (
 
 <p>
 <strong>(C1)</strong> &ensp; Every era of human knowledge can be modeled as a KRS \((\mathcal{X}, \mathcal{R}, C, D_\theta, \Theta)\).<br><br>
-<strong>(C2)</strong> &ensp; Each transition improves compression rate \(\rho\), access latency, or both. Intra-paradigm material improvements (e.g., Moore's law) do not constitute KRS transitions.<br><br>
+<strong>(C2)</strong> &ensp; Each transition improves compression rate \(\rho\), access latency, or both. Intra-paradigm material improvements (e.g., Moore's law) do not constitute KRS transitions. Moreover, the Coupled Growth Impossibility (Theorem 2.4) shows that traditional storage paradigms cannot solve the universal archive problem even in principle, because data production grows faster than storage capacity.<br><br>
 <strong>(C3)</strong> &ensp; The alphabet was a cross-modal bridge: \(C_{\text{alphabet}} = \alpha \circ C_{\text{voice}}\), combining the compression efficiency of evolved speech with the persistence of visual marks.<br><br>
 <strong>(C4)</strong> &ensp; The LLM is the first <em>generative</em> KRS: it compresses by storing the generative structure of ideas rather than the ideas themselves, achieving compression ratios approaching \(K(x \mid \theta) / |x|\).<br><br>
 <strong>(C5)</strong> &ensp; Reader variance (the "Gibran property") is formalized as generative divergence \(\mathcal{G}(r)\), which is a structural feature of under-determined representations, not a defect.<br><br>
