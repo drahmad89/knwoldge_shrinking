@@ -694,21 +694,72 @@ The LLM paradigm's distinctive feature is that \(|\theta|\) is enormous (hundred
 
 <!-- ════════════════════════════════════════ -->
 <section>
-<h2>9. The Question–Answer Inversion</h2>
+<h2>9. Behavioral Prompts and the Accessibility Conjecture</h2>
+
+<h3>9.1 &ensp; Implicit Prompting via Behavioral Accumulation</h3>
+
+<p>
+We have thus far treated prompts as <em>explicit</em> token sequences constructed by a user. However, existing recommendation systems already implement a form of implicit prompting that anticipates the access interface of the generative paradigm.
+</p>
+
+<div class="block definition">
+  <span class="block-label">Definition 9.1 — Behavioral Prompt</span>
+  Let \(b_1, b_2, \ldots, b_T\) be a sequence of behavioral signals (posts, comments, clicks, pauses, likes, searches) produced by an agent over time. The <em>behavioral prompt</em> is the accumulated representation:
+  $$p_{\text{behav}}(T) = \text{Encode}(b_1, b_2, \ldots, b_T)$$
+  where \(\text{Encode}\) maps the behavioral sequence into the prompt space \(\mathcal{R}\). In current recommendation systems, this encoding is an embedding vector. In the generative paradigm, it would be a structured prompt suitable for input to a generative decompressor \(D_\theta\).
+</div>
+
+<div class="block definition">
+  <span class="block-label">Definition 9.2 — Prompt Refinement Dynamics</span>
+  The behavioral prompt evolves over time via an iterative feedback loop:
+  $$p_{\text{behav}}(t+1) = p_{\text{behav}}(t) \oplus \Delta(b_{t+1}, D_\theta(p_{\text{behav}}(t)))$$
+  where \(\oplus\) denotes prompt update and \(\Delta\) captures the interaction between the agent's new behavior \(b_{t+1}\) and the content surfaced by the current prompt. Each behavioral interaction refines the implicit query. This accounts for the phenomenological experience of "descending a rabbit hole": the system and the user co-evolve toward increasingly specific regions of the idea space \(\mathcal{X}\).
+</div>
+
+<div class="block proposition">
+  <span class="block-label">Proposition 9.3 — Convergence to Semantic Neighborhoods</span>
+  Under mild continuity assumptions on \(\text{Encode}\) and \(D_\theta\), the behavioral prompt sequence \(\{p_{\text{behav}}(t)\}_{t=1}^{\infty}\) converges to a <em>semantic attractor</em> — a region of \(\mathcal{R}\) corresponding to the agent's deep informational interests. The "rabbit hole" phenomenon in social media recommendation is a noisy, engagement-optimized instance of this convergence. A well-designed system would optimize for semantic depth \(\delta\) (Definition 6.2) rather than engagement metrics, guiding the behavioral prompt toward increasingly wisdom-like compressions of the user's actual informational needs.
+</div>
+
+<div class="block remark">
+  <span class="block-label">Remark — Explicit vs. Implicit Prompting</span>
+  Current recommendation systems implement implicit prompting but with two critical deficiencies: (i) the behavioral prompt is opaque to the user — they cannot inspect, edit, or refine it directly; (ii) the optimization target is engagement rather than reconstructive fidelity \(\phi\) or semantic depth \(\delta\). The mature access interface of the LLM era would make the behavioral prompt <em>transparent and editable</em>, allowing users to see the "question" the system infers from their behavior and refine it explicitly. This would unify implicit and explicit prompting into a single access paradigm.
+</div>
+
+<h3>9.2 &ensp; The Universal Accessibility Conjecture</h3>
+
+<div class="block theorem">
+  <span class="block-label">Conjecture 9.4 — No Idea Is Lost (Universal Accessibility)</span>
+  In a mature generative KRS with a saturated decompressor \(D_\theta\) (Definition 10.1), the following holds: for every idea \(x\) ever contributed to the datasphere \(\mathcal{X}_{\text{total}}\), there exists a prompt \(p_x\) — either explicit or behaviorally accumulated — such that:
+  $$s\big(x,\; D_\theta(p_x)\big) \geq 1 - \epsilon$$
+  That is: <em>no idea is unreachable, provided the right question exists to surface it</em>. The accessibility of \(x\) depends not on its storage location, popularity, or metadata, but solely on the existence and quality of the prompt \(p_x\).
+</div>
+
+<div class="block corollary">
+  <span class="block-label">Corollary 9.5 — The Depth-Accessibility Principle</span>
+  The Universal Accessibility Conjecture implies that an idea's long-term discoverability is proportional to its <em>compressibility into a wisdom-form</em>. Ideas that are fixed points of the compress-decompress cycle (Theorem 6.7) are maximally accessible, because they can be reached from the widest variety of prompts — any question that touches their underlying pattern will surface them. Ideas that resist wisdom-compression (highly context-dependent, non-transferable, flat) are accessible only through narrow, specific prompts and are thus more likely to be lost.
+  <br><br>
+  This yields a prediction: the information that survives across paradigm transitions is not the most popular or the most replicated, but the <em>deepest</em> — the information with the highest semantic depth \(\delta\) and strongest fixed-point stability. This is consistent with the historical observation that proverbs, mathematical theorems, and fundamental scientific principles survive across millennia, while ephemeral content vanishes.
+</div>
+</section>
+
+<!-- ════════════════════════════════════════ -->
+<section>
+<h2>10. The Question–Answer Inversion</h2>
 
 <p>
 The preceding sections frame the LLM as a decompression engine: given a prompt (seed), it generates an output (unfolded idea). We now observe that this framing admits a dual interpretation that inverts the historical narrative.
 </p>
 
 <div class="block definition">
-  <span class="block-label">Definition 9.1 — The Saturated Decompressor</span>
+  <span class="block-label">Definition 10.1 — The Saturated Decompressor</span>
   A decompressor \(D_\theta\) is <em>saturated</em> with respect to a knowledge corpus \(\mathcal{X}_{\text{total}}\) if, for every idea \(x \in \mathcal{X}_{\text{total}}\), there exists some prompt \(p\) such that:
   $$s\big(x,\; D_\theta(p)\big) \geq 1 - \epsilon$$
   In other words: the model can reconstruct any idea in the corpus, given the right input. The answer space is complete. What remains is the problem of finding the right prompt.
 </div>
 
 <div class="block theorem">
-  <span class="block-label">Theorem 9.2 — The Inversion Principle</span>
+  <span class="block-label">Theorem 10.2 — The Inversion Principle</span>
   In all KRS eras \(\mathcal{K}_0\) through \(\mathcal{K}_5\), the bottleneck is the <em>answer</em>: information must be found, retrieved, or decoded. The difficulty function is:
   $$\text{difficulty}_{\text{classical}}(x) \propto \text{retrieval cost}(x \mid \mathcal{A})$$
   In the saturated LLM regime \(\mathcal{K}_6\), the bottleneck inverts. Since \(D_\theta\) is saturated, every answer is accessible in principle. The difficulty function becomes:
@@ -717,7 +768,7 @@ The preceding sections frame the LLM as a decompression engine: given a prompt (
 </div>
 
 <div class="block corollary">
-  <span class="block-label">Corollary 9.3 — The Adams Observation</span>
+  <span class="block-label">Corollary 10.3 — The Adams Observation</span>
   Douglas Adams' fictional scenario — a computer that has computed the Answer (42) to the Ultimate Question, after which the only remaining problem is determining what the Question was — is a narrative encoding of the Inversion Principle. In our formalism: the model \(D_\theta\) is the computer (saturated with answers); the prompt \(p^*\) is the Ultimate Question; and the entire history of knowledge representation has been converging toward a regime in which question-construction, not answer-retrieval, is the primary intellectual challenge.
 </div>
 
@@ -729,7 +780,7 @@ The preceding sections frame the LLM as a decompression engine: given a prompt (
 
 <!-- ════════════════════════════════════════ -->
 <section>
-<h2>10. Summary of Core Claims</h2>
+<h2>11. Summary of Core Claims</h2>
 
 <p>
 <strong>(C1)</strong> &ensp; Every era of human knowledge can be modeled as a KRS \((\mathcal{X}, \mathcal{R}, C, D_\theta, \Theta)\).<br><br>
@@ -739,16 +790,17 @@ The preceding sections frame the LLM as a decompression engine: given a prompt (
 <strong>(C5)</strong> &ensp; Reader variance (the "Gibran property") is formalized as generative divergence \(\mathcal{G}(r)\), which is a structural feature of under-determined representations, not a defect.<br><br>
 <strong>(C6)</strong> &ensp; Wisdom is formalized as deep compression: representations with maximal semantic depth \(\delta(r)\) that are fixed points of the compress-decompress cycle. The optimal prompt has the structure of a proverb, not a summary.<br><br>
 <strong>(C7)</strong> &ensp; The fundamental tradeoff is a three-way tension between rate, fidelity, and generativity.<br><br>
-<strong>(C8)</strong> &ensp; In the saturated LLM regime, the bottleneck inverts from answer-retrieval to question-construction. The terminal skill of the era is the formulation of wisdom-structured prompts.
+<strong>(C8)</strong> &ensp; In the saturated LLM regime, the bottleneck inverts from answer-retrieval to question-construction. The terminal skill of the era is the formulation of wisdom-structured prompts.<br><br>
+<strong>(C9)</strong> &ensp; Prompts need not be explicit: behavioral accumulation (clicks, posts, interactions) constitutes an implicit prompting system already present in recommendation algorithms. The Universal Accessibility Conjecture (9.4) predicts that in a mature generative KRS, no idea is unreachable — discoverability depends on the depth of the question, not the popularity of the answer.
 </p>
 </section>
 
 <!-- ════════════════════════════════════════ -->
 <section>
-<h2>11. Connections to Existing Work</h2>
+<h2>12. Connections to Existing Work</h2>
 
 <p>
-The framework connects to and extends several established lines of inquiry: Shannon's rate-distortion theory provides the information-theoretic foundation for the fidelity-compression tradeoff formalized in Section 7; Kolmogorov-Chaitin complexity theory underpins the prompt-as-minimal-description result of Theorem 4.3; Delétang et al. (2024), "Language Modeling Is Compression," empirically demonstrates that language models function as compressors, which this framework extends with the historical KRS sequence, the generative divergence formalism, and the wisdom fixed-point theory; McLuhan's media theory ("the medium is the message") is formalized here as the claim that the structure of \(\mathcal{R}\) and \(D_\theta\) shapes the accessible subspace of \(\mathcal{X}\); Ong's <em>Orality and Literacy</em> provides the historical grounding for the cross-modal bridge theorem of Section 3; Hofstadter and Sander's <em>Surfaces and Essences</em> supports the analogical encoding principle of Theorem 6.5, arguing that analogy is the core of cognition; and Banach's fixed-point theorem provides the mathematical template for the iterative convergence property of wisdom representations formalized in Theorem 6.7. Finally, Adams' <em>The Hitchhiker's Guide to the Galaxy</em> (1979), while fictional, provides the narrative archetype for the Question–Answer Inversion of Section 9: the comedic premise that a complete answer is useless without the corresponding question is formalized here as the Inversion Principle (Theorem 9.2).
+The framework connects to and extends several established lines of inquiry: Shannon's rate-distortion theory provides the information-theoretic foundation for the fidelity-compression tradeoff formalized in Section 7; Kolmogorov-Chaitin complexity theory underpins the prompt-as-minimal-description result of Theorem 4.3; Delétang et al. (2024), "Language Modeling Is Compression," empirically demonstrates that language models function as compressors, which this framework extends with the historical KRS sequence, the generative divergence formalism, and the wisdom fixed-point theory; McLuhan's media theory ("the medium is the message") is formalized here as the claim that the structure of \(\mathcal{R}\) and \(D_\theta\) shapes the accessible subspace of \(\mathcal{X}\); Ong's <em>Orality and Literacy</em> provides the historical grounding for the cross-modal bridge theorem of Section 3; Hofstadter and Sander's <em>Surfaces and Essences</em> supports the analogical encoding principle of Theorem 6.5, arguing that analogy is the core of cognition; and Banach's fixed-point theorem provides the mathematical template for the iterative convergence property of wisdom representations formalized in Theorem 6.7. Finally, Adams' <em>The Hitchhiker's Guide to the Galaxy</em> (1979), while fictional, provides the narrative archetype for the Question–Answer Inversion of Section 10: the comedic premise that a complete answer is useless without the corresponding question is formalized here as the Inversion Principle (Theorem 10.2). The treatment of behavioral prompts in Section 9 connects to the collaborative filtering literature (Koren et al., 2009) and the emerging work on LLM-augmented recommendation systems, reframing recommendation as implicit prompt refinement in a generative KRS.
 </p>
 </section>
 
